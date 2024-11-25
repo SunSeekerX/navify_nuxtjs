@@ -58,6 +58,13 @@ pm2 delete navify
 
 # 使用 PM2 启动
 pm2 start ecosystem.config.cjs
+# 或者
+NITRO_PORT=3002 pm2 start .output/server/index.mjs --name navify
+# Windows CMD
+set NITRO_PORT=3002 && pm2 start .output/server/index.mjs --name navify
+# Windows PowerShell
+$env:NITRO_PORT=3002; pm2 start .output/server/index.mjs --name navify
+
 
 # 保存 PM2 配置，以便服务器重启后自动运行
 pm2 save
