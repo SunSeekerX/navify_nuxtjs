@@ -47,10 +47,10 @@ yarn
 yarn dev
 
 # 复制环境变量示例文件
-cp .env.example .env.production
+cp .env.example .env.prod
 
 # 构建生产版本
-yarn build
+yarn build:prod
 
 # PM2
 # 如果之前有运行的实例，先删除
