@@ -7,6 +7,7 @@
     "dev:prod": "nuxt dev --dotenv .env.prod",
     "build": "nuxt build --dotenv .env.dev",
     "build:prod": "nuxt build --dotenv .env.prod",
+    "build:demo": "nuxt build --dotenv .env.demo",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
