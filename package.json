@@ -1,0 +1,26 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxtjs/robots": "^5.0.0",
+    "@nuxtjs/sitemap": "^7.0.0",
+    "@nuxtjs/tailwindcss": "^6.12.2",
+    "nuxt": "^3.14.159",
+    "sitemap": "^8.0.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "packageManager": "yarn@4.5.1",
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "sass-embedded": "^1.81.0"
+  }
+}

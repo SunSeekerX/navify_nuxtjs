@@ -1,0 +1,26 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg">
+  <!-- 渐变背景 -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1F2937"/>
+      <stop offset="100%" style="stop-color:#111827"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#bg-gradient)"/>
+
+  <!-- 装饰性图形 -->
+  <circle cx="100" cy="100" r="160" fill="#374151" opacity="0.1"/>
+  <circle cx="1100" cy="530" r="160" fill="#374151" opacity="0.1"/>
+
+  <!-- 文字组合 -->
+  <g transform="translate(600, 315)">
+    <!-- 网站名称 -->
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="120px" fill="#FFFFFF" font-weight="bold" text-anchor="middle">Navify</text>
+
+    <!-- 副标题 -->
+    <text x="0" y="60" font-family="Arial, sans-serif" font-size="32px" fill="#9CA3AF" text-anchor="middle">Navigate Your Development Journey</text>
+  </g>
+</svg>
