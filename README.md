@@ -46,9 +46,26 @@ yarn
 # 启动开发服务器
 yarn dev
 
-# 构建生产版本
+# 复制环境变量示例文件
 cp .env.example .env.production
+
+# 构建生产版本
 yarn build
+
+# PM2
+# 如果之前有运行的实例，先删除
+pm2 delete navify
+
+# 使用 PM2 启动
+pm2 start ecosystem.config.cjs
+
+# 保存 PM2 配置，以便服务器重启后自动运行
+pm2 save
+
+# 其他常用命令
+pm2 logs navify    # 查看日志
+pm2 monit          # 监控状态
+pm2 restart navify # 重启应用
 ```
 
 ## 使用方法
