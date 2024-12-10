@@ -45,7 +45,18 @@ const transformData = (rawData) => {
 const categories = ref([])
 const sections = ref([])
 
-const { data: navData, pending, error, refresh } = await useAsyncData('navigation', () => $fetch('/api/navigation'))
+const {
+  data: navData,
+  pending,
+  error,
+  refresh,
+} = await useAsyncData('navigation', () =>
+  $fetch('/api/navigation', {
+    params: {
+      _t: Date.now(), // 添加时间戳
+    },
+  }),
+)
 
 // // const { data: navData, pending, error } = await useFetch('/api/navigation')
 // if (navData.value?.code === 200) {
