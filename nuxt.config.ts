@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     nestjsApi: process.env.NESTJS_API_URL,
     // 公共变量，客户端可访问
     public: {
+      nestjsApi: process.env.NESTJS_API_URL,
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
       siteName: process.env.NUXT_PUBLIC_SITE_NAME,
       siteDescription: process.env.NUXT_PUBLIC_SITE_DESCRIPTION,
@@ -103,11 +104,11 @@ export default defineNuxtConfig({
         // maxAge: 60, // 60秒
       },
     }, // API 路由启用 CORS
-    '/**': {
-      headers: {
-        'Cache-Control': 'max-age=300, must-revalidate',
-      },
-    },
+    // '/**': {
+    //   headers: {
+    //     'Cache-Control': 'max-age=300, must-revalidate',
+    //   },
+    // },
   },
   experimental: {
     payloadExtraction: true, // 启用页面负载提取

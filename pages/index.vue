@@ -7,7 +7,7 @@ const isSidebarOpen = ref(false)
 const activeSection = ref('')
 // 添加 favicon 加载状态追踪
 const faviconLoaded = ref({})
-
+const route = useRoute()
 // 将原始数据转换为所需格式的函数
 const transformData = (rawData) => {
   // 按 sort 字段排序
@@ -45,53 +45,21 @@ const transformData = (rawData) => {
 const categories = ref([])
 const sections = ref([])
 
-// const {
-//   data: navData,
-//   pending,
-//   error,
-//   refresh,
-// } = await useAsyncData('navigation', () =>
-//   $fetch('/api/navigation', {
-//     params: {
-//       _t: Date.now(), // 添加时间戳
-//     },
-//   }),
-// )
-
-const {
-  data: navData,
-  pending,
-  error,
-  refresh,
-} = await useAsyncData('navigation', () => $fetch('/api/navigation'), {
-  // 关键配置
-  fresh: true, // 强制获取新数据
-  watch: false, // 禁用监听
-  server: true, // 在服务端执行
-  cache: false, // 禁用缓存
-})
-
-// // const { data: navData, pending, error } = await useFetch('/api/navigation')
-// if (navData.value?.code === 200) {
-//   console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功`)
-//   const transformedData = transformData(navData.value.data)
-//   categories.value = transformedData.categories
-//   sections.value = transformedData.sections
-// } else {
-//   console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据失败，使用默认演示数据`, navData.value)
-//   categories.value = defaultCategories
-//   sections.value = defaultSections
-// }
+// const { data, clear } = useFetch(`${useRuntimeConfig().public.nestjsApi}/nav/data?timestamp=${Date.now()}`, {
+//   // lazy: true,
+//   // server: false,
+// })
+const { data, error, refresh, clear } = await useAsyncData('navigation', () => $fetch('/api/navigation'))
 
 // 观察数据变化并处理
 watchEffect(() => {
-  if (navData.value?.code === 200) {
-    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功: `, navData.value)
-    const transformedData = transformData(navData.value.data)
+  if (data.value?.code === 200) {
+    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功`)
+    const transformedData = transformData(data.value.data)
     categories.value = transformedData.categories
     sections.value = transformedData.sections
   } else {
-    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据失败，使用默认演示数据`, navData.value)
+    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据失败，使用默认演示数据`, data.value)
     categories.value = defaultCategories
     sections.value = defaultSections
   }
@@ -112,6 +80,12 @@ const getFaviconUrl = (url) => {
     return ''
   }
 }
+watch(
+  () => route.path,
+  (path) => {
+    if (path === '/') clear()
+  },
+)
 
 // 处理图片加载错误
 const handleImageError = (event, item) => {
