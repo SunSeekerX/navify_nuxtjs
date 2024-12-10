@@ -86,7 +86,7 @@ const {
 // 观察数据变化并处理
 watchEffect(() => {
   if (navData.value?.code === 200) {
-    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功`)
+    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功: `, navData.value)
     const transformedData = transformData(navData.value.data)
     categories.value = transformedData.categories
     sections.value = transformedData.sections

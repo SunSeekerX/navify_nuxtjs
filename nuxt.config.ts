@@ -94,7 +94,7 @@ export default defineNuxtConfig({
   },
   // 添加路由规则
   routeRules: {
-    '/': { prerender: false }, // 不预渲染首页
+    '/': { prerender: false, swr: true }, // 不预渲染首页
     '/api/**': {
       cors: true,
       cache: {
