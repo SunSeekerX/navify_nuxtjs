@@ -45,18 +45,31 @@ const transformData = (rawData) => {
 const categories = ref([])
 const sections = ref([])
 
+// const {
+//   data: navData,
+//   pending,
+//   error,
+//   refresh,
+// } = await useAsyncData('navigation', () =>
+//   $fetch('/api/navigation', {
+//     params: {
+//       _t: Date.now(), // 添加时间戳
+//     },
+//   }),
+// )
+
 const {
   data: navData,
   pending,
   error,
   refresh,
-} = await useAsyncData('navigation', () =>
-  $fetch('/api/navigation', {
-    params: {
-      _t: Date.now(), // 添加时间戳
-    },
-  }),
-)
+} = await useAsyncData('navigation', () => $fetch('/api/navigation'), {
+  // 关键配置
+  fresh: true, // 强制获取新数据
+  watch: false, // 禁用监听
+  server: true, // 在服务端执行
+  cache: false, // 禁用缓存
+})
 
 // // const { data: navData, pending, error } = await useFetch('/api/navigation')
 // if (navData.value?.code === 200) {

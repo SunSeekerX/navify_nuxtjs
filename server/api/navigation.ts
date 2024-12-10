@@ -1,16 +1,10 @@
 export default defineEventHandler(async (event) => {
   try {
-    // 设置响应头，禁用缓存
-    setResponseHeaders(event, {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      Pragma: 'no-cache',
-      Expires: '0',
-    })
-
     const config = useRuntimeConfig()
     const response = await fetch(`${config.nestjsApi}/nav/data`, {
+      cache: 'no-store', // 关键配置，确保不使用缓存
       headers: {
-        'Cache-Control': 'no-cache',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
         Pragma: 'no-cache',
       },
     })
