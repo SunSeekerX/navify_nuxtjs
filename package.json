@@ -13,7 +13,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/robots": "^5.0.0",
+    "@nuxtjs/robots": "^5.0.1",
     "@nuxtjs/sitemap": "^7.0.0",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "nuxt": "^3.14.159",
@@ -21,9 +21,10 @@
     "vue": "latest",
     "vue-router": "latest"
   },
-  "packageManager": "yarn@4.5.1",
+  "packageManager": "yarn@4.5.3",
   "devDependencies": {
-    "prettier": "^3.3.3",
-    "sass-embedded": "^1.81.0"
+    "prettier": "^3.4.2",
+    "sass-embedded": "^1.82.0",
+    "tailwind-scrollbar": "^3.1.0"
   }
 }

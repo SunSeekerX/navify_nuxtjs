@@ -72,7 +72,20 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // css: ['@/assets/css/scrollbar.css'],
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots'],
+  tailwindcss: {
+    cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
+    configPath: 'tailwind.config',
+    // exposeConfig: true,
+    exposeConfig: {
+      level: 2,
+    },
+    config: {
+      // plugins: [require('tailwind-scrollbar')],
+    },
+    viewer: true,
+  },
   robots: {},
   nitro: {
     compressPublicAssets: true,
@@ -82,7 +95,14 @@ export default defineNuxtConfig({
   // 添加路由规则
   routeRules: {
     '/': { prerender: false }, // 不预渲染首页
-    '/api/**': { cors: true }, // API 路由启用 CORS
+    '/api/**': {
+      cors: true,
+      cache: {
+        maxAge: 0, // 禁用缓存
+        // 或者设置较短的缓存时间
+        // maxAge: 60, // 60秒
+      },
+    }, // API 路由启用 CORS
     '/**': {
       headers: {
         'Cache-Control': 'max-age=300, must-revalidate',

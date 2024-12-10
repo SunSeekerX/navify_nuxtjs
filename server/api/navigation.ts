@@ -1,26 +1,19 @@
-// export default defineEventHandler(async (event) => {
-//   try {
-//     const config = useRuntimeConfig()
-//     const response = await fetch(`${config.nestjsApi}/nav/data`)
-//     return await response.json()
-//   } catch (error) {
-//     throw createError({
-//       statusCode: 500,
-//       message: 'Failed to fetch navigation data',
-//     })
-//   }
-// })
-
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig()
-    const response = await fetch(`${config.nestjsApi}/nav/data`)
-    // const data = await response.json()
+    // 设置响应头，禁用缓存
+    setResponseHeaders(event, {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    })
 
-    // return {
-    //   code: 200,
-    //   data: data,
-    // }
+    const config = useRuntimeConfig()
+    const response = await fetch(`${config.nestjsApi}/nav/data`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+      },
+    })
 
     return await response.json()
   } catch (error) {
@@ -29,9 +22,5 @@ export default defineEventHandler(async (event) => {
       statusCode: 500,
       message: 'Failed to fetch navigation data',
     })
-    // return {
-    //   code: 500,
-    //   message: '获取导航数据失败',
-    // }
   }
 })

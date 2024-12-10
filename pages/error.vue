@@ -1,14 +1,19 @@
-// error.vue
 <template>
-  <div class="error-page">
-    <h1>{{ error.statusCode }}</h1>
-    <div class="error-desc">{{ error.message }}</div>
-    <NuxtLink to="/">返回首页</NuxtLink>
+  <div>
+    <h1>Error Page</h1>
+    <p>{{ error.message }}</p>
+    <button @click="$router.push('/')">Go Home</button>
   </div>
 </template>
 
-<script setup>
-defineProps({
-  error: Object,
-})
+<script>
+export default {
+  name: 'ErrorPage',
+  props: {
+    error: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+}
 </script>

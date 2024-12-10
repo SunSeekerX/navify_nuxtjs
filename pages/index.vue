@@ -338,7 +338,7 @@ const toggleSidebar = () => {
       <!-- 侧边栏 -->
       <aside
         :class="[
-          'fixed lg:sticky lg:block z-40 transition-all duration-300 w-64 top-16 h-[calc(100vh-4rem)] pt-6 overflow-y-auto scrollbar-thin',
+          'fixed lg:sticky lg:block z-40 transition-all duration-300 w-64 top-16 h-[calc(100vh-4rem)] pt-6 overflow-y-auto',
           isSidebarOpen ? 'left-0' : '-left-64',
           isDarkMode ? 'bg-gray-800' : 'bg-white',
         ]"
@@ -402,13 +402,17 @@ const toggleSidebar = () => {
                   <img
                     :src="getFaviconUrl(item.url)"
                     :alt="item.name"
-                    :class="['w-6 h-6 object-contain', !faviconLoaded[item.url] ? 'opacity-0' : 'opacity-100']"
+                    :class="[
+                      'w-6 h-6 object-contain transition-opacity duration-200 ease-in-out',
+                      !faviconLoaded[item.url] ? 'opacity-0' : 'opacity-100',
+                    ]"
                     @error="handleImageError($event, item)"
                     ref="faviconRef"
                   />
+
                   <div
                     v-show="!faviconLoaded[item.url]"
-                    class="absolute w-6 h-6 flex items-center justify-center text-white font-medium rounded-sm"
+                    class="absolute w-6 h-6 flex items-center justify-center text-white font-medium rounded-sm animate-pulse"
                     :style="{ backgroundColor: item.color }"
                   >
                     {{ getInitials(item.name) }}
@@ -437,46 +441,3 @@ const toggleSidebar = () => {
     </div>
   </div>
 </template>
-
-<style>
-/* 自定义滚动条样式 */
-.scrollbar-thin {
-  scrollbar-width: thin;
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175, 0.5);
-  border-radius: 3px;
-}
-
-/* 防止侧边栏出现时页面可以滚动 */
-.overflow-hidden {
-  overflow: hidden;
-}
-/* 添加图标加载动画 */
-.icon-loading {
-  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-img {
-  transition: opacity 0.2s ease-in-out;
-}
-</style>
