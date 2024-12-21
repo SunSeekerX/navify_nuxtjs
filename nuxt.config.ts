@@ -75,18 +75,18 @@ export default defineNuxtConfig({
   },
   // css: ['@/assets/css/scrollbar.css'],
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots'],
-  tailwindcss: {
-    cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
-    configPath: 'tailwind.config',
-    // exposeConfig: true,
-    exposeConfig: {
-      level: 2,
-    },
-    config: {
-      // plugins: [require('tailwind-scrollbar')],
-    },
-    viewer: true,
-  },
+  // tailwindcss: {
+  //   // cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
+  //   configPath: 'tailwind.config',
+  //   // exposeConfig: true,
+  //   exposeConfig: {
+  //     level: 2,
+  //   },
+  //   config: {
+  //     // plugins: [require('tailwind-scrollbar')],
+  //   },
+  //   viewer: true,
+  // },
   robots: {},
   nitro: {
     compressPublicAssets: true,
@@ -95,8 +95,9 @@ export default defineNuxtConfig({
   },
   // 添加路由规则
   routeRules: {
-    '/': { prerender: false, swr: true }, // 不预渲染首页
-    '/api/**': {
+    // '/': { prerender: false, swr: true }, // 不预渲染首页
+    '/': { prerender: true }, // 不预渲染首页
+    '/api/*': {
       cors: true,
       cache: {
         maxAge: 0, // 禁用缓存
@@ -110,20 +111,20 @@ export default defineNuxtConfig({
     //   },
     // },
   },
-  experimental: {
-    payloadExtraction: true, // 启用页面负载提取
-  },
+  // experimental: {
+  //   payloadExtraction: true, // 启用页面负载提取
+  // },
   // 其他配置保持不变
-  vite: {
-    css: {
-      preprocessorOptions: {
-        sass: {
-          api: 'modern',
-        },
-      },
-    },
-    optimizeDeps: {
-      include: ['vue', 'vue-router'],
-    },
-  },
+  // vite: {
+  //   css: {
+  //     preprocessorOptions: {
+  //       sass: {
+  //         api: 'modern',
+  //       },
+  //     },
+  //   },
+  //   optimizeDeps: {
+  //     include: ['vue', 'vue-router'],
+  //   },
+  // },
 })

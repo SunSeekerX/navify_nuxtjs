@@ -49,21 +49,72 @@ const sections = ref([])
 //   // lazy: true,
 //   // server: false,
 // })
-const { data, error, refresh, clear } = await useAsyncData('navigation', () => $fetch('/api/navigation'))
+// const { data, error, refresh, clear } = await useAsyncData('navigation', () => $fetch('/api/navigation'), {
+//   getCachedData: () => null, // 禁用缓存,每次都重新请求
+// })
+
+// const { data } = await useAsyncData('navigation', () => $fetch('/api/navigation'), {
+//   transform: (response) => {
+//     if (response.code === 200) {
+//       return transformData(response.data)
+//     }
+//     return {
+//       categories: defaultCategories,
+//       sections: defaultSections,
+//     }
+//   },
+//   getCachedData: () => null, // 禁用缓存,每次都重新请求
+// })
+
+const { data, error, refresh } = await useLazyAsyncData('navigation', () => $fetch('/api/navigation'), {
+  immediate: false, // 初始不立即请求
+})
 
 // 观察数据变化并处理
+// watchEffect(() => {
+//   if (data.value?.code === 200) {
+//     console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功`)
+//     const transformedData = transformData(data.value.data)
+//     categories.value = transformedData.categories
+//     sections.value = transformedData.sections
+//   } else {
+//     console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据失败，使用默认演示数据`, data.value)
+//     categories.value = defaultCategories
+//     sections.value = defaultSections
+//   }
+// })
+
 watchEffect(() => {
   if (data.value?.code === 200) {
-    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据成功`)
     const transformedData = transformData(data.value.data)
     categories.value = transformedData.categories
     sections.value = transformedData.sections
   } else {
-    console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据失败，使用默认演示数据`, data.value)
     categories.value = defaultCategories
     sections.value = defaultSections
   }
 })
+
+// 使用 watchEffect 统一更新数据
+// watchEffect(() => {
+//   if (data.value) {
+//     categories.value = data.value.categories
+//     sections.value = data.value.sections
+//   } else {
+//     console.log(`++++++[${new Date().toISOString()}] 获取接口导航数据失败，使用默认演示数据`, data.value)
+//     categories.value = defaultCategories
+//     sections.value = defaultSections
+//   }
+// })
+
+watch(
+  () => route.path,
+  () => {
+    if (route.path === '/') {
+      refresh()
+    }
+  },
+)
 
 // 获取网站图标的 URL
 const getFaviconUrl = (url) => {
@@ -80,20 +131,12 @@ const getFaviconUrl = (url) => {
     return ''
   }
 }
-watch(
-  () => route.path,
-  (path) => {
-    if (path === '/') clear()
-  },
-)
-
 // 处理图片加载错误
 const handleImageError = (event, item) => {
   faviconLoaded.value[item.url] = false
   // 移除错误的图片
   event.target.style.display = 'none'
 }
-
 // 获取名称的首字母
 const getInitials = (name) => {
   return name
@@ -103,7 +146,6 @@ const getInitials = (name) => {
     .toUpperCase()
     .slice(0, 2)
 }
-
 // 检查图片是否成功加载
 const checkImageLoad = (url) => {
   if (url === '#') return
@@ -117,7 +159,6 @@ const checkImageLoad = (url) => {
   }
   img.src = getFaviconUrl(url)
 }
-
 // 修改滚动到指定部分的逻辑
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId)
@@ -140,7 +181,6 @@ const scrollToSection = (sectionId) => {
     }, 10)
   }
 }
-
 // 添加防抖函数
 const debounce = (fn, delay) => {
   let timeoutId
@@ -149,7 +189,6 @@ const debounce = (fn, delay) => {
     timeoutId = setTimeout(() => fn.apply(null, args), delay)
   }
 }
-
 // 修改滚动位置更新激活状态的逻辑
 const updateActiveSection = () => {
   const sections = document.querySelectorAll('main > div[id]')
@@ -179,7 +218,6 @@ const handleResize = () => {
     document.body.classList.remove('overflow-hidden')
   }
 }
-
 // 监听系统主题变化
 let mediaQuery = null
 const handleThemeChange = (e) => {
@@ -188,9 +226,29 @@ const handleThemeChange = (e) => {
     document.documentElement.classList.toggle('dark', e.matches)
   }
 }
+// 切换主题
+const toggleTheme = () => {
+  if (process.client) {
+    isDarkMode.value = !isDarkMode.value
+    localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light')
+    document.documentElement.classList.toggle('dark')
+  }
+}
+// 修改侧边栏切换逻辑
+const toggleSidebar = () => {
+  if (process.client) {
+    isSidebarOpen.value = !isSidebarOpen.value
+    if (isSidebarOpen.value) {
+      document.body.classList.add('overflow-hidden')
+    } else {
+      document.body.classList.remove('overflow-hidden')
+    }
+  }
+}
 
 // 初始化
 onMounted(() => {
+  refresh()
   if (process.client) {
     // 添加客户端检查
     // 主题初始化
@@ -239,27 +297,6 @@ onUnmounted(() => {
     }
   }
 })
-
-// 切换主题
-const toggleTheme = () => {
-  if (process.client) {
-    isDarkMode.value = !isDarkMode.value
-    localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light')
-    document.documentElement.classList.toggle('dark')
-  }
-}
-
-// 修改侧边栏切换逻辑
-const toggleSidebar = () => {
-  if (process.client) {
-    isSidebarOpen.value = !isSidebarOpen.value
-    if (isSidebarOpen.value) {
-      document.body.classList.add('overflow-hidden')
-    } else {
-      document.body.classList.remove('overflow-hidden')
-    }
-  }
-}
 </script>
 
 <template>
