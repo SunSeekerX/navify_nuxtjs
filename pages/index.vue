@@ -68,6 +68,7 @@ const sections = ref([])
 
 const { data, error, refresh } = await useLazyAsyncData('navigation', () => $fetch('/api/navigation'), {
   immediate: false, // 初始不立即请求
+  getCachedData: () => null, // 禁用缓存,每次都重新请求
 })
 
 // 观察数据变化并处理
